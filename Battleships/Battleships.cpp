@@ -57,23 +57,20 @@ int main()
 {
 	ClearScreen();
 
-	SetRgb(COLOUR_YELLOW_ON_BLACK);
-	DrawBox(2, 2, 22, 12);
+    char cPlayerGrid[GRIDSIZE][GRIDSIZE]; // TF: Array
 
-	SetRgb(COLOUR_WHITE_ON_BLACK);
-	GotoXY(0, 16);
-	
-	char cPlayerGrid[GRIDSIZE][GRIDSIZE]; // TF: Array
-
-	FillGrid(cPlayerGrid);
+    FillGrid(cPlayerGrid);
 	cPlayerGrid[0][0] = HIT;
 	cPlayerGrid[1][1] = MISS;
 
+	SetRgb(COLOUR_YELLOW_ON_BLACK);
 	DrawBox(2, 2, 22, 12);
 	DrawGrid(cPlayerGrid, 2, 2);
 
+	SetRgb(COLOUR_WHITE_ON_BLACK);
+	GotoXY(0, 16);
+    
 	return 0;
-
 }
 
 void GotoXY(int _iX, int _iY)
