@@ -14,7 +14,7 @@ Mail : Campbell.Roberts@mds.ac.nz
 #include <windows.h>
 using namespace std;
 
-//Colour options for console text
+// Colour options for console text.
 enum EColour
 {
 	COLOUR_WHITE_ON_BLACK = 0, // White on Black.
@@ -30,15 +30,31 @@ enum EColour
 	COLOUR_GREEN_ON_WHITE = 10, // Green on White.
 	COLOUR_YELLOW_ON_WHITE = 11, // Yellow on White.
 	COLOUR_BLUE_ON_WHITE = 12, // Blue on White.
-	COLOUR_MAGENTA_ON_WHITE = 13,// Magenta on White.
+	COLOUR_MAGENTA_ON_WHITE = 13, // Magenta on White.
 	COLOUR_CYAN_ON_WHITE = 14, // Cyan on White.
 	COLOUR_WHITE_ON_WHITE = 15 // White on White.
 };
-//Constants
+
+// Constants.
 const int SCREENWIDTH = 80; // TF: Constant
 const int SCREENHEIGHT = 24;
+
 // Function Prototypes.
 void ClearScreen();
+void GotoXY(int _iX, int _iY);
+void SetRgb(EColour _eColour);
+
+int main()
+{
+	cout << "This text should vanish" << endl;
+
+	ClearScreen();
+	GotoXY(5, 5);
+	cout << "Hello";
+
+	return 0;
+}
+
 void GotoXY(int _iX, int _iY)
 {
 	COORD point;
@@ -46,12 +62,19 @@ void GotoXY(int _iX, int _iY)
 	point.Y = _iY;
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), point);
 }
-void SetRgb(EColour _eColour);
 
-int main()
+void ClearScreen()
 {
-	GotoXY(5, 5);
-	cout << "Hello";
+	COORD coordScreen = { 0, 0 };
+	DWORD cCharsWritten;
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	DWORD dwConSize;
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
-	return 0;
+	GetConsoleScreenBufferInfo(hConsole, &csbi);
+	dwConSize = csbi.dwSize.X * csbi.dwSize.Y; // TF: Arithmetic Operator
+	FillConsoleOutputCharacter(hConsole, TEXT(' '), dwConSize, coordScreen, &cCharsWritten);
+	GetConsoleScreenBufferInfo(hConsole, &csbi);
+	FillConsoleOutputAttribute(hConsole, csbi.wAttributes, dwConSize, coordScreen, &cCharsWritten);
+	SetConsoleCursorPosition(hConsole, coordScreen);
 }
