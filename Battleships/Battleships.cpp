@@ -205,7 +205,7 @@ void DrawGrid(char _cGrid[GRIDSIZE][GRIDSIZE], int _iLeft, int _iTop)
 
 			// Move to this cell's position and print it two characters wide.
 			GotoXY(_iLeft + 1 + (iCol * CELLWIDTH), _iTop + 1 + iRow);
-			cout << _cGrid[iRow][iCol] << _cGrid[iRow][iCol];
+			cout << _cGrid[iRow][iCol] << " ";
 		}
 	}
 
