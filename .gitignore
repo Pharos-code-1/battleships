@@ -1,7 +1,10 @@
-# Addtions
+# Additions
 .vs/
-.x86/
-.x64/
+x86/
+x64/
+Debug/
+Release/
+*.user
 
 # Prerequisites
 *.d
