@@ -43,29 +43,17 @@ const int SCREENHEIGHT = 24;
 void ClearScreen();
 void GotoXY(int _iX, int _iY);
 void SetRgb(EColour _eColour);
+void DrawBox(int _iLeft, int _iTop, int _iWidth, int _iHeight);
 
 int main()
 {
 	ClearScreen();
 
 	SetRgb(COLOUR_YELLOW_ON_BLACK);
-	GotoXY(5, 5);
-	cout << "Yellow";
-
-	SetRgb(COLOUR_RED_ON_BLACK);
-	GotoXY(5, 6);
-	cout << "Red";
-
-	SetRgb(COLOUR_GREEN_ON_BLACK);
-	GotoXY(5, 7);
-	cout << "Green";
-
-	SetRgb(COLOUR_BLUE_ON_BLACK);
-	GotoXY(5, 8);
-	cout << "Blue";
+	DrawBox(2, 2, 22, 12);
 
 	SetRgb(COLOUR_WHITE_ON_BLACK);
-	GotoXY(0, 10);
+	GotoXY(0, 16);
 
 	return 0;
 }
@@ -93,6 +81,7 @@ void ClearScreen()
 	FillConsoleOutputAttribute(hConsole, csbi.wAttributes, dwConSize, coordScreen, &cCharsWritten);
 	SetConsoleCursorPosition(hConsole, coordScreen);
 }
+
 void SetRgb(EColour _eColour)
 {
 	switch (_eColour) // TF: Conditional Statement
@@ -133,5 +122,25 @@ void SetRgb(EColour _eColour)
 			FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 		break;
 	}
+	}
+}
+void DrawBox(int _iLeft, int _iTop, int _iWidth, int _iHeight)
+{
+	// Draw the top and bottom edges.
+	for (int iX = 0; iX < _iWidth; ++iX) // TF: Iteration Structure
+	{
+		GotoXY(_iLeft + iX, _iTop);
+		cout << "-";
+		GotoXY(_iLeft + iX, _iTop + _iHeight - 1);
+		cout << "-";
+	}
+
+	// Draw the left and right edges.
+	for (int iY = 1; iY < _iHeight - 1; ++iY)
+	{
+		GotoXY(_iLeft, _iTop + iY);
+		cout << "|";
+		GotoXY(_iLeft + _iWidth - 1, _iTop + iY);
+		cout << "|";
 	}
 }
