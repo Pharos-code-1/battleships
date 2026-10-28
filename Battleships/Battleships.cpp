@@ -38,12 +38,20 @@ enum EColour
 // Constants.
 const int SCREENWIDTH = 80; // TF: Constant
 const int SCREENHEIGHT = 24;
+const int GRIDSIZE = 10;
+const int CELLWIDTH = 2;
+const char OCEAN = '#';
+const char HIT = 'X';
+const char MISS = '?';
+const char SHIP = 'S';
 
 // Function Prototypes.
 void ClearScreen();
 void GotoXY(int _iX, int _iY);
 void SetRgb(EColour _eColour);
 void DrawBox(int _iLeft, int _iTop, int _iWidth, int _iHeight);
+void FillGrid(char _cGrid[GRIDSIZE][GRIDSIZE]);
+void DrawGrid(char _cGrid[GRIDSIZE][GRIDSIZE], int _iLeft, int _iTop);
 
 int main()
 {
@@ -54,8 +62,18 @@ int main()
 
 	SetRgb(COLOUR_WHITE_ON_BLACK);
 	GotoXY(0, 16);
+	
+	char cPlayerGrid[GRIDSIZE][GRIDSIZE]; // TF: Array
+
+	FillGrid(cPlayerGrid);
+	cPlayerGrid[0][0] = HIT;
+	cPlayerGrid[1][1] = MISS;
+
+	DrawBox(2, 2, 22, 12);
+	DrawGrid(cPlayerGrid, 2, 2);
 
 	return 0;
+
 }
 
 void GotoXY(int _iX, int _iY)
@@ -124,6 +142,7 @@ void SetRgb(EColour _eColour)
 	}
 	}
 }
+
 void DrawBox(int _iLeft, int _iTop, int _iWidth, int _iHeight)
 {
 	// Draw the top and bottom edges.
@@ -143,4 +162,55 @@ void DrawBox(int _iLeft, int _iTop, int _iWidth, int _iHeight)
 		GotoXY(_iLeft + _iWidth - 1, _iTop + iY);
 		cout << "|";
 	}
+}
+
+void FillGrid(char _cGrid[GRIDSIZE][GRIDSIZE])
+{
+	for (int iRow = 0; iRow < GRIDSIZE; ++iRow)
+	{
+		for (int iCol = 0; iCol < GRIDSIZE; ++iCol)
+		{
+			_cGrid[iRow][iCol] = OCEAN;
+		}
+	}
+}
+
+void DrawGrid(char _cGrid[GRIDSIZE][GRIDSIZE], int _iLeft, int _iTop)
+{
+	for (int iRow = 0; iRow < GRIDSIZE; ++iRow)
+	{
+		for (int iCol = 0; iCol < GRIDSIZE; ++iCol)
+		{
+			// Choose a colour based on what is in this cell.
+			switch (_cGrid[iRow][iCol])
+			{
+			case OCEAN:
+			{
+				SetRgb(COLOUR_BLUE_ON_BLACK);
+				break;
+			}
+			case HIT:
+			{
+				SetRgb(COLOUR_RED_ON_BLACK);
+				break;
+			}
+			case MISS:
+			{
+				SetRgb(COLOUR_YELLOW_ON_BLACK);
+				break;
+			}
+			default:
+			{
+				SetRgb(COLOUR_WHITE_ON_BLACK);
+				break;
+			}
+			}
+
+			// Move to this cell's position and print it two characters wide.
+			GotoXY(_iLeft + 1 + (iCol * CELLWIDTH), _iTop + 1 + iRow);
+			cout << _cGrid[iRow][iCol] << _cGrid[iRow][iCol];
+		}
+	}
+
+	SetRgb(COLOUR_WHITE_ON_BLACK);
 }
