@@ -46,11 +46,26 @@ void SetRgb(EColour _eColour);
 
 int main()
 {
-	cout << "This text should vanish" << endl;
-
 	ClearScreen();
+
+	SetRgb(COLOUR_YELLOW_ON_BLACK);
 	GotoXY(5, 5);
-	cout << "Hello";
+	cout << "Yellow";
+
+	SetRgb(COLOUR_RED_ON_BLACK);
+	GotoXY(5, 6);
+	cout << "Red";
+
+	SetRgb(COLOUR_GREEN_ON_BLACK);
+	GotoXY(5, 7);
+	cout << "Green";
+
+	SetRgb(COLOUR_BLUE_ON_BLACK);
+	GotoXY(5, 8);
+	cout << "Blue";
+
+	SetRgb(COLOUR_WHITE_ON_BLACK);
+	GotoXY(0, 10);
 
 	return 0;
 }
@@ -77,4 +92,46 @@ void ClearScreen()
 	GetConsoleScreenBufferInfo(hConsole, &csbi);
 	FillConsoleOutputAttribute(hConsole, csbi.wAttributes, dwConSize, coordScreen, &cCharsWritten);
 	SetConsoleCursorPosition(hConsole, coordScreen);
+}
+void SetRgb(EColour _eColour)
+{
+	switch (_eColour) // TF: Conditional Statement
+	{
+	case COLOUR_WHITE_ON_BLACK:
+	{
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),
+			FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+		break;
+	}
+	case COLOUR_RED_ON_BLACK:
+	{
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),
+			FOREGROUND_INTENSITY | FOREGROUND_RED);
+		break;
+	}
+	case COLOUR_GREEN_ON_BLACK:
+	{
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),
+			FOREGROUND_INTENSITY | FOREGROUND_GREEN);
+		break;
+	}
+	case COLOUR_YELLOW_ON_BLACK:
+	{
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),
+			FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN);
+		break;
+	}
+	case COLOUR_BLUE_ON_BLACK:
+	{
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),
+			FOREGROUND_INTENSITY | FOREGROUND_BLUE);
+		break;
+	}
+	default:
+	{
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),
+			FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+		break;
+	}
+	}
 }
