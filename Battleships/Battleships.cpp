@@ -52,6 +52,7 @@ void DrawBox(int _iLeft, int _iTop, int _iWidth, int _iHeight);
 void FillGrid(char _cGrid[GRIDSIZE][GRIDSIZE]);
 void DrawGrid(char _cGrid[GRIDSIZE][GRIDSIZE], int _iLeft, int _iTop);
 void PrintAscii() {
+    SetRgb(COLOUR_BLUE_ON_BLACK);
     cout << R"(
          |=================================================================================|
          |                _           _   _   _           _     _                          |
@@ -78,10 +79,11 @@ void PrintAscii() {
 }       //https://ascii.co.uk/art/battleships + https://www.asciiart.eu/art/49d8fc2dbf033525
 int main()
 {
-    int MENUOPTION = 0;
+    int iMenuOption = 0;
     int WINS = 0;
     int MODE = 0;
-    PrintAscii();//(               )
+    PrintAscii();
+    SetRgb(COLOUR_BLUE_ON_BLACK);
     cout << R"(         |  _  |                                   ||                   =@=                |             
          | |1| | Start:                            ||                   =@=                |
          |_____|                                   ||                .==+@+==.             |          
@@ -96,8 +98,33 @@ int main()
          |_____|                                   ||                                      |
          |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
          |                                                                                 |)" << endl; 
-        cout << "         |       Please enter your choice: ";
-        cin >> MENUOPTION;
+    const int RIGHTBORDERX = 91;
+    const int NUMBERX = 12;
+    const int FIRSTNUMBERY = 24;
+    const int NUMBERSPACING = 3;
+    cout << "         |                            Please enter your choice: ";
+    // get cursor pos right after the prompt.
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+    COORD coordPrompt = csbi.dwCursorPosition;
+    GotoXY(RIGHTBORDERX, coordPrompt.Y);
+    cout << "|";
+    GotoXY(0, coordPrompt.Y + 1);
+    cout << "         |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|";
+
+    // Colour the four numbers yellow.
+    SetRgb(COLOUR_YELLOW_ON_BLACK);
+    for (int iOption = 1; iOption <= 4; ++iOption)
+    {
+        GotoXY(NUMBERX, FIRSTNUMBERY + (iOption - 1) * NUMBERSPACING);
+        cout << iOption;
+    }
+
+    // Back to blue, jump back to just after the prompt.
+    SetRgb(COLOUR_BLUE_ON_BLACK);
+    GotoXY(coordPrompt.X, coordPrompt.Y);
+    cin >> iMenuOption;
+
 
         do {
         //Input check
@@ -107,10 +134,10 @@ int main()
             cout << "\nInvalid input, please enter a number.\n" << endl;
             continue;
         }
-            switch (MENUOPTION) {
+            switch (iMenuOption) {
             case 1:
                 ClearScreen();
-
+                /*
                 char cPlayerGrid[GRIDSIZE][GRIDSIZE]; // TF: Array
 
                 FillGrid(cPlayerGrid);
@@ -123,7 +150,7 @@ int main()
                 DrawGrid(cPlayerGrid, 2, 2);
 
                 SetRgb(COLOUR_WHITE_ON_BLACK);
-                GotoXY(0, 16);
+                GotoXY(0, 16);*/
                 break;
             case 2:
                 
@@ -140,7 +167,7 @@ int main()
             }
     
 
-        } while (MENUOPTION != 4);
+        } while (iMenuOption != 4);
     return 0;
 }
 
