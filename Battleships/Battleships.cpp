@@ -100,31 +100,29 @@ int main()
          |                                                                                 |)" << endl; 
     const int RIGHTBORDERX = 91;
     const int NUMBERX = 12;
-    const int FIRSTNUMBERY = 24;
+    const int FIRSTNUMBERY = 13;
     const int NUMBERSPACING = 3;
     cout << "         |                            Please enter your choice: ";
     // get cursor pos right after the prompt.
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
     COORD coordPrompt = csbi.dwCursorPosition;
+    cout << "\n         |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|";
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+    coordPrompt.Y = csbi.dwCursorPosition.Y - 1;
     GotoXY(RIGHTBORDERX, coordPrompt.Y);
     cout << "|";
-    GotoXY(0, coordPrompt.Y + 1);
-    cout << "         |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|";
-
-    // Colour the four numbers yellow.
+    
     SetRgb(COLOUR_YELLOW_ON_BLACK);
     for (int iOption = 1; iOption <= 4; ++iOption)
     {
-        GotoXY(NUMBERX, FIRSTNUMBERY + (iOption - 1) * NUMBERSPACING);
+        GotoXY(NUMBERX, coordPrompt.Y - FIRSTNUMBERY + (iOption - 1) * NUMBERSPACING);
         cout << iOption;
     }
-
     // Back to blue, jump back to just after the prompt.
     SetRgb(COLOUR_BLUE_ON_BLACK);
     GotoXY(coordPrompt.X, coordPrompt.Y);
     cin >> iMenuOption;
-
 
         do {
         //Input check
