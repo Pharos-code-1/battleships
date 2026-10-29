@@ -52,7 +52,7 @@ void DrawBox(int _iLeft, int _iTop, int _iWidth, int _iHeight);
 void FillGrid(char _cGrid[GRIDSIZE][GRIDSIZE]);
 void DrawGrid(char _cGrid[GRIDSIZE][GRIDSIZE], int _iLeft, int _iTop);
 void PrintAscii() {
-    SetRgb(COLOUR_BLUE_ON_BLACK);
+    SetRgb(COLOUR_WHITE_ON_BLACK);
     cout << R"(
          |=================================================================================|
          |                _           _   _   _           _     _                          |
@@ -62,8 +62,10 @@ void PrintAscii() {
          |               | |_) | (_| | |_| |_| |  __/\__ \ | | | | |_) \__ \               |
          |               |_.__/ \__,_|\__|\__|_|\___||___/_| |_|_| .__/|___/               |
          |                                                     | |                         |
-         |                                                 |#) |_|                         | 
-         |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~oo~~~~~~~~~~~~~|#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+         |                                                     |_|                         | )" << endl;
+    SetRgb(COLOUR_BLUE_ON_BLACK);
+    cout <<
+        R"(         |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~oo~~~~~~~~~~~~~|#)~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
          |                                 o o             |#                              |
          |                                o ooo            |#                              |
          |                                  o oo           |#                              |
@@ -77,95 +79,101 @@ void PrintAscii() {
          |                                                                                 |
          |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|)" << endl;
 }       //https://ascii.co.uk/art/battleships + https://www.asciiart.eu/art/49d8fc2dbf033525
+
+
 int main()
 {
     int iMenuOption = 0;
     int WINS = 0;
     int MODE = 0;
-    PrintAscii();
-    SetRgb(COLOUR_BLUE_ON_BLACK);
-    cout << R"(         |  _  |                                   ||                   =@=                |             
-         | |1| | Start:                            ||                   =@=                |
+    do {
+        ClearScreen();
+        PrintAscii();
+        SetRgb(COLOUR_WHITE_ON_BLACK);
+        cout << R"(         |  _  |                                   ||                   =@=                |             
+         | | | | Start:                            ||                   =@=                |
          |_____|                                   ||                .==+@+==.             |          
          |  _  |                                   ||                   :@-                |             
-         | |2| | Instructions:                     ||                   -@-                |             
+         | | | | Instructions:                     ||                   -@-                |             
          |_____|                                   ||                   -@=                |             
          |  _  |                                   ||                   =@=                |             
-         | |3| | Credits:                          ||            -@=    +@+    -@-         |      
+         | | | | Credits:                          ||            -@=    +@+    -@-         |      
          |_____|                                   ||             *%:  .%@%.  :%*          |       
          |  _  |                                   ||              .#@@@@@@@@@#:           |        
-         | |4| | Quit Game:                        ||                   =@+                |             
-         |_____|                                   ||                                      |
-         |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
-         |                                                                                 |)" << endl; 
-    const int RIGHTBORDERX = 91;
-    const int NUMBERX = 12;
-    const int FIRSTNUMBERY = 13;
-    const int NUMBERSPACING = 3;
-    cout << "         |                            Please enter your choice: ";
-    // get cursor pos right after the prompt.
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
-    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-    COORD coordPrompt = csbi.dwCursorPosition;
-    cout << "\n         |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|";
-    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-    coordPrompt.Y = csbi.dwCursorPosition.Y - 1;
-    GotoXY(RIGHTBORDERX, coordPrompt.Y);
-    cout << "|";
-    
-    SetRgb(COLOUR_YELLOW_ON_BLACK);
-    for (int iOption = 1; iOption <= 4; ++iOption)
-    {
-        GotoXY(NUMBERX, coordPrompt.Y - FIRSTNUMBERY + (iOption - 1) * NUMBERSPACING);
-        cout << iOption;
-    }
-    // Back to blue, jump back to just after the prompt.
-    SetRgb(COLOUR_BLUE_ON_BLACK);
-    GotoXY(coordPrompt.X, coordPrompt.Y);
-    cin >> iMenuOption;
+         | | | | Quit Game:                        ||                   =@+                |             
+         |_____|                                   ||                                      |)" << endl;
+        SetRgb(COLOUR_YELLOW_ON_BLACK);
+        cout <<
+            R"(         |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+         |                                                                                 |)" << endl;
+        const int RIGHTBORDERX = 91;
+        const int NUMBERX = 12;
+        const int FIRSTNUMBERY = 13;
+        const int NUMBERSPACING = 3;
+        cout << "         |                            Please enter your choice: ";
+        // get cursor pos right after the prompt.
+        CONSOLE_SCREEN_BUFFER_INFO csbi;
+        GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+        COORD coordPrompt = csbi.dwCursorPosition;
+        cout << "\n         |=================================================================================|";
+        GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+        coordPrompt.Y = csbi.dwCursorPosition.Y - 1;
+        GotoXY(RIGHTBORDERX, coordPrompt.Y);
+        cout << "|";
 
-        do {
+        SetRgb(COLOUR_RED_ON_BLACK);
+        for (int iOption = 1; iOption <= 4; ++iOption)
+        {
+            GotoXY(NUMBERX, coordPrompt.Y - FIRSTNUMBERY + (iOption - 1) * NUMBERSPACING);
+            cout << iOption;
+        }
+        //jump back to just after the prompt.
+        GotoXY(coordPrompt.X, coordPrompt.Y);
+        cin >> iMenuOption;
+
         //Input check
         if (cin.fail()) {
             cin.clear();
             cin.ignore(1000, '\n');
             cout << "\nInvalid input, please enter a number.\n" << endl;
+            Sleep(1500);
             continue;
         }
-            switch (iMenuOption) {
-            case 1:
-                ClearScreen();
-                /*
-                char cPlayerGrid[GRIDSIZE][GRIDSIZE]; // TF: Array
+        switch (iMenuOption) {
+        case 1:
+            ClearScreen();
+            /*
+            char cPlayerGrid[GRIDSIZE][GRIDSIZE]; // TF: Array
 
-                FillGrid(cPlayerGrid);
-                cPlayerGrid[0][0] = HIT;
-                cPlayerGrid[0][1] = SHIP;
-                cPlayerGrid[3][1] = MISS;
+            FillGrid(cPlayerGrid);
+            cPlayerGrid[0][0] = HIT;
+            cPlayerGrid[0][1] = SHIP;
+            cPlayerGrid[3][1] = MISS;
 
-                SetRgb(COLOUR_YELLOW_ON_BLACK);
-                DrawBox(2, 2, 22, 12);
-                DrawGrid(cPlayerGrid, 2, 2);
+            SetRgb(COLOUR_YELLOW_ON_BLACK);
+            DrawBox(2, 2, 22, 12);
+            DrawGrid(cPlayerGrid, 2, 2);
 
-                SetRgb(COLOUR_WHITE_ON_BLACK);
-                GotoXY(0, 16);*/
-                break;
-            case 2:
-                
-                break;
-            case 3:
-                
-                break;
-            case 4:
-               
-                break;
-            default:
-                
-                break;
-            }
-    
+            SetRgb(COLOUR_WHITE_ON_BLACK);
+            GotoXY(0, 16);*/
+            break;
+        case 2:
 
-        } while (iMenuOption != 4);
+            break;
+        case 3:
+
+            break;
+        case 4:
+
+            break;
+        default:
+            cout << "\nInvalid option, please choose 1 to 4.\n" << endl;
+            Sleep(1500);
+            break;
+        }
+
+
+    } while (iMenuOption != 4);
     return 0;
 }
 
