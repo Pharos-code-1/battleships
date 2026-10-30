@@ -16,26 +16,26 @@ using namespace std;
 // Colour options for console text.
 enum EColour
 {
-    COLOUR_WHITE_ON_BLACK = 0, // White on Black.
-    COLOUR_RED_ON_BLACK = 1, // Red on Black.
-    COLOUR_GREEN_ON_BLACK = 2, // Green on Black.
-    COLOUR_YELLOW_ON_BLACK = 3, // Yellow on Black.
-    COLOUR_BLUE_ON_BLACK = 4, // Blue on Black.
-    COLOUR_MAGENTA_ON_BLACK = 5, // Magenta on Black.
-    COLOUR_CYAN_ON_BLACK = 6, // Cyan on Black.
-    COLOUR_BLACK_ON_GRAY = 7, // Black on Gray.
-    COLOUR_BLACK_ON_WHITE = 8, // Black on White.
-    COLOUR_RED_ON_WHITE = 9, // Red on White.
-    COLOUR_GREEN_ON_WHITE = 10, // Green on White.
-    COLOUR_YELLOW_ON_WHITE = 11, // Yellow on White.
-    COLOUR_BLUE_ON_WHITE = 12, // Blue on White.
-    COLOUR_MAGENTA_ON_WHITE = 13, // Magenta on White.
-    COLOUR_CYAN_ON_WHITE = 14, // Cyan on White.
-    COLOUR_WHITE_ON_WHITE = 15 // White on White.
+    COLOUR_WHITE_ON_BLACK = 0, 
+    COLOUR_RED_ON_BLACK = 1, 
+    COLOUR_GREEN_ON_BLACK = 2, 
+    COLOUR_YELLOW_ON_BLACK = 3,
+    COLOUR_BLUE_ON_BLACK = 4,
+    COLOUR_MAGENTA_ON_BLACK = 5,
+    COLOUR_CYAN_ON_BLACK = 6, 
+    COLOUR_BLACK_ON_GRAY = 7, 
+    COLOUR_BLACK_ON_WHITE = 8, 
+    COLOUR_RED_ON_WHITE = 9,
+    COLOUR_GREEN_ON_WHITE = 10, 
+    COLOUR_YELLOW_ON_WHITE = 11, 
+    COLOUR_BLUE_ON_WHITE = 12, 
+    COLOUR_MAGENTA_ON_WHITE = 13,
+    COLOUR_CYAN_ON_WHITE = 14, 
+    COLOUR_WHITE_ON_WHITE = 15 
 };
 
 // Constants.
-const int SCREENWIDTH = 80; // TF: Constant
+const int SCREENWIDTH = 80; 
 const int SCREENHEIGHT = 24;
 const int GRIDSIZE = 10;
 const int CELLWIDTH = 2;
@@ -44,13 +44,14 @@ const char HIT = 'X';
 const char MISS = '?';
 const char SHIP = 'O';
 
-// Function Prototypes.
+// Functions.
 void ClearScreen();
 void GotoXY(int _iX, int _iY);
 void SetRgb(EColour _eColour);
 void DrawBox(int _iLeft, int _iTop, int _iWidth, int _iHeight);
 void FillGrid(char _cGrid[GRIDSIZE][GRIDSIZE]);
 void DrawGrid(char _cGrid[GRIDSIZE][GRIDSIZE], int _iLeft, int _iTop);
+void DrawLabels(int _iLeft, int _iTop);
 void PrintAscii() {
     SetRgb(COLOUR_WHITE_ON_BLACK);
     cout << R"(
@@ -142,20 +143,26 @@ int main()
         switch (iMenuOption) {
         case 1:
             ClearScreen();
-            /*
-            char cPlayerGrid[GRIDSIZE][GRIDSIZE]; // TF: Array
+  
+            char cPlayerGrid[GRIDSIZE][GRIDSIZE]; 
+            char cEnemeyGrid[GRIDSIZE][GRIDSIZE];
 
             FillGrid(cPlayerGrid);
-            cPlayerGrid[0][0] = HIT;
-            cPlayerGrid[0][1] = SHIP;
-            cPlayerGrid[3][1] = MISS;
+            FillGrid(cEnemeyGrid);
 
             SetRgb(COLOUR_YELLOW_ON_BLACK);
-            DrawBox(2, 2, 22, 12);
-            DrawGrid(cPlayerGrid, 2, 2);
+            DrawBox(6, 4, 22, 12);
+            DrawGrid(cPlayerGrid, 6, 4);
+            DrawLabels(6, 4);
+            SetRgb(COLOUR_RED_ON_BLACK);
+
+
+
+
 
             SetRgb(COLOUR_WHITE_ON_BLACK);
-            GotoXY(0, 16);*/
+            GotoXY(0, 16);
+            system("pause");
             break;
         case 2:
 
@@ -194,7 +201,7 @@ void ClearScreen()
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
     GetConsoleScreenBufferInfo(hConsole, &csbi);
-    dwConSize = csbi.dwSize.X * csbi.dwSize.Y; // TF: Arithmetic Operator
+    dwConSize = csbi.dwSize.X * csbi.dwSize.Y; 
     FillConsoleOutputCharacter(hConsole, TEXT(' '), dwConSize, coordScreen, &cCharsWritten);
     GetConsoleScreenBufferInfo(hConsole, &csbi);
     FillConsoleOutputAttribute(hConsole, csbi.wAttributes, dwConSize, coordScreen, &cCharsWritten);
@@ -247,7 +254,7 @@ void SetRgb(EColour _eColour)
 void DrawBox(int _iLeft, int _iTop, int _iWidth, int _iHeight)
 {
     // Draw the top and bottom edges.
-    for (int iX = 0; iX < _iWidth; ++iX) // TF: Iteration Structure
+    for (int iX = 0; iX < _iWidth; ++iX) 
     {
         GotoXY(_iLeft + iX, _iTop);
         cout << "-";
@@ -311,6 +318,26 @@ void DrawGrid(char _cGrid[GRIDSIZE][GRIDSIZE], int _iLeft, int _iTop)
             GotoXY(_iLeft + 1 + (iCol * CELLWIDTH), _iTop + 1 + iRow);
             cout << _cGrid[iRow][iCol] << " ";
         }
+    }
+
+    SetRgb(COLOUR_WHITE_ON_BLACK);
+}
+void DrawLabels(int _iLeft, int _iTop)
+{
+    SetRgb(COLOUR_GREEN_ON_BLACK);
+
+    // letters across the top
+    for (int iCol = 0; iCol < GRIDSIZE; ++iCol)
+    {
+        GotoXY(_iLeft + 1 + (iCol * CELLWIDTH), _iTop - 1);
+        cout << char('A' + iCol);
+    }
+
+    // numbers down the side
+    for (int iRow = 0; iRow < GRIDSIZE; ++iRow)
+    {
+        GotoXY(_iLeft - 3, _iTop + 1 + iRow);
+        cout << iRow + 1;
     }
 
     SetRgb(COLOUR_WHITE_ON_BLACK);
