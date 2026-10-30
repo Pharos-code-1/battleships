@@ -52,7 +52,7 @@ void DrawBox(int _iLeft, int _iTop, int _iWidth, int _iHeight);
 void FillGrid(char _cGrid[GRIDSIZE][GRIDSIZE]);
 void DrawGrid(char _cGrid[GRIDSIZE][GRIDSIZE], int _iLeft, int _iTop);
 void DrawLabels(int _iLeft, int _iTop);
-void PrintAscii() {
+void PrintHeader() {
     SetRgb(COLOUR_WHITE_ON_BLACK);
     cout << R"(
          |=================================================================================|
@@ -64,6 +64,9 @@ void PrintAscii() {
          |               |_.__/ \__,_|\__|\__|_|\___||___/_| |_|_| .__/|___/               |
          |                                                     | |                         |
          |                                                     |_|                         | )" << endl;
+} //https://ascii.co.uk/art/battleships
+void PrintAscii() {
+
     SetRgb(COLOUR_BLUE_ON_BLACK);
     cout <<
         R"(         |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~oo~~~~~~~~~~~~~|#)~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
@@ -79,7 +82,7 @@ void PrintAscii() {
          |  |__ -     ---------_________________________________________________ /         |
          |                                                                                 |
          |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|)" << endl;
-}       //https://ascii.co.uk/art/battleships + https://www.asciiart.eu/art/49d8fc2dbf033525
+} //https://www.asciiart.eu/art/49d8fc2dbf033525
 
 
 int main()
@@ -89,6 +92,7 @@ int main()
     int MODE = 0;
     do {
         ClearScreen();
+        PrintHeader();
         PrintAscii();
         SetRgb(COLOUR_WHITE_ON_BLACK);
         cout << R"(         |  _  |                                   ||                   =@=                |             
@@ -145,9 +149,9 @@ int main()
             ClearScreen();
   
             char cPlayerGrid[GRIDSIZE][GRIDSIZE]; 
-            char cEnemeyGrid[GRIDSIZE][GRIDSIZE];
+            char cEnemyGrid[GRIDSIZE][GRIDSIZE];
             FillGrid(cPlayerGrid);
-            FillGrid(cEnemeyGrid);
+            FillGrid(cEnemyGrid);
 
             //Playregrid (left)
             SetRgb(COLOUR_YELLOW_ON_BLACK);
@@ -166,7 +170,7 @@ int main()
             //enemy grid (right)
             SetRgb(COLOUR_YELLOW_ON_BLACK);
             DrawBox(36, 4, 22, 12);
-            DrawGrid(cPlayerGrid, 36, 4);
+            DrawGrid(cEnemyGrid, 36, 4);
             DrawLabels(36, 4);
             // text under the grids
             SetRgb(COLOUR_RED_ON_BLACK);
@@ -176,7 +180,7 @@ int main()
             cout << "Enemy";
 
             SetRgb(COLOUR_WHITE_ON_BLACK);
-            GotoXY(0, 16);
+            GotoXY(0, 20);
             system("pause");
             break;
         case 2:
