@@ -146,19 +146,34 @@ int main()
   
             char cPlayerGrid[GRIDSIZE][GRIDSIZE]; 
             char cEnemeyGrid[GRIDSIZE][GRIDSIZE];
-
             FillGrid(cPlayerGrid);
             FillGrid(cEnemeyGrid);
 
+            //Playregrid (left)
             SetRgb(COLOUR_YELLOW_ON_BLACK);
             DrawBox(6, 4, 22, 12);
             DrawGrid(cPlayerGrid, 6, 4);
             DrawLabels(6, 4);
+
+            // red middle bar |
             SetRgb(COLOUR_RED_ON_BLACK);
+            for (int iY = 3; iY < 17; iY++)
+            {
+                GotoXY(31, iY);
+                cout << "|";
+            }
 
-
-
-
+            //enemy grid (right)
+            SetRgb(COLOUR_YELLOW_ON_BLACK);
+            DrawBox(36, 4, 22, 12);
+            DrawGrid(cPlayerGrid, 36, 4);
+            DrawLabels(36, 4);
+            // text under the grids
+            SetRgb(COLOUR_RED_ON_BLACK);
+            GotoXY(6, 17);
+            cout << "You";
+            GotoXY(36, 17);
+            cout << "Enemy";
 
             SetRgb(COLOUR_WHITE_ON_BLACK);
             GotoXY(0, 16);
