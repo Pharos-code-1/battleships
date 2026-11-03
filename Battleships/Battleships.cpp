@@ -9,6 +9,12 @@ Description : main source file for console Battleships game
 Author : Campbell Roberts
 Mail : Campbell.Roberts@mds.ac.nz
 **************************************************************************/
+/*
+TO DO LATER MAYBE:
+Change ships from O to <=>/<==>/<===> etc
+Total shots, Hit + miss counter
+    int WINS = 0; in main unused, wins counter later or delete
+*/
 
 #include <iostream>
 #include <windows.h>
@@ -54,7 +60,7 @@ void GotoXY(int _iX, int _iY);
 void SetRgb(EColour _eColour);
 void DrawBox(int _iLeft, int _iTop, int _iWidth, int _iHeight);
 void FillGrid(char _cGrid[GRIDSIZE][GRIDSIZE]);
-void DrawGrid(char _cGrid[GRIDSIZE][GRIDSIZE], int _iLeft, int _iTop);
+void DrawGrid(char _cGrid[GRIDSIZE][GRIDSIZE], int _iLeft, int _iTop, bool _bShowShips);
 void DrawLabels(int _iLeft, int _iTop);
 bool PlaceShip(char _cGrid[GRIDSIZE][GRIDSIZE], int _iRow, int _iCol, int _iLength, bool _bHorizontal);
 void AutoPlaceShips(char _cGrid[GRIDSIZE][GRIDSIZE]);
@@ -166,7 +172,7 @@ int main()
             //Playregrid (left)
             SetRgb(COLOUR_YELLOW_ON_BLACK);
             DrawBox(6, 4, 22, 12);
-            DrawGrid(cPlayerGrid, 6, 4);
+            DrawGrid(cPlayerGrid, 6, 4, true);
             DrawLabels(6, 4);
 
             // red middle bar |
@@ -180,7 +186,7 @@ int main()
             //enemy grid (right)
             SetRgb(COLOUR_YELLOW_ON_BLACK);
             DrawBox(36, 4, 22, 12);
-            DrawGrid(cEnemyGrid, 36, 4);
+            DrawGrid(cEnemyGrid, 36, 4, false);
             DrawLabels(36, 4);
             // text under the grids
             SetRgb(COLOUR_RED_ON_BLACK);
@@ -301,7 +307,7 @@ void DrawBox(int _iLeft, int _iTop, int _iWidth, int _iHeight)
         cout << "|";
     }
 }
-
+//fill grid with the ocean (#)
 void FillGrid(char _cGrid[GRIDSIZE][GRIDSIZE])
 {
     for (int iRow = 0; iRow < GRIDSIZE; ++iRow)
@@ -313,14 +319,20 @@ void FillGrid(char _cGrid[GRIDSIZE][GRIDSIZE])
     }
 }
 
-void DrawGrid(char _cGrid[GRIDSIZE][GRIDSIZE], int _iLeft, int _iTop)
+void DrawGrid(char _cGrid[GRIDSIZE][GRIDSIZE], int _iLeft, int _iTop, bool _bShowShips)
 {
     for (int iRow = 0; iRow < GRIDSIZE; ++iRow)
     {
         for (int iCol = 0; iCol < GRIDSIZE; ++iCol)
         {
+            //hide ships if not showing them
+            char cShow = _cGrid[iRow][iCol];
+            if (cShow == SHIP && !_bShowShips)
+            {
+                cShow = OCEAN;
+            }
             // Choose a colour based on what is in this cell.
-            switch (_cGrid[iRow][iCol])
+            switch (cShow)
             {
             case OCEAN:
             {
@@ -351,7 +363,7 @@ void DrawGrid(char _cGrid[GRIDSIZE][GRIDSIZE], int _iLeft, int _iTop)
 
             // Move to this cell's position and print it two characters wide.
             GotoXY(_iLeft + 1 + (iCol * CELLWIDTH), _iTop + 1 + iRow);
-            cout << _cGrid[iRow][iCol] << " ";
+            cout << cShow << " ";
         }
     }
 
