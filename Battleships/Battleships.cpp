@@ -100,8 +100,8 @@ void PrintAscii() {
 int main()
 {
     int iMenuOption = 0;
-    int WINS = 0;
-    int MODE = 0;
+    int iWins = 0;
+    int iMode = 0;
     srand(static_cast<unsigned int>(time(0)));
     do {
         ClearScreen();
@@ -166,10 +166,10 @@ int main()
             char cEnemyGrid[GRIDSIZE][GRIDSIZE];
             FillGrid(cPlayerGrid);
             FillGrid(cEnemyGrid);
-            AutoPlaceShips(cPlayerGrid);
+            ///AutoPlaceShips(cPlayerGrid);
             AutoPlaceShips(cEnemyGrid);
 
-            //Playregrid (left)
+            //Playergrid (left)
             SetRgb(COLOUR_YELLOW_ON_BLACK);
             DrawBox(6, 4, 22, 12);
             DrawGrid(cPlayerGrid, 6, 4, true);
@@ -196,7 +196,32 @@ int main()
             cout << "Enemy";
 
             SetRgb(COLOUR_WHITE_ON_BLACK);
-            GotoXY(0, 20);
+            GotoXY(6, 19);
+            cout << "1) Manual ship placement";
+            GotoXY(6, 20);
+            cout << "2) Auto ship placement";
+            GotoXY(6, 21);
+            cout << "Please enter your choice: ";
+            cin >> iMode;
+
+            if (iMode == 2)
+            {
+                AutoPlaceShips(cPlayerGrid);
+            }
+            else if (iMode == 1)
+            {
+                // manual placement goes here later
+            }
+            else
+            {
+                // input, do later
+            }
+
+            // redraw grid so the ships show
+            SetRgb(COLOUR_YELLOW_ON_BLACK);
+            DrawGrid(cPlayerGrid, 6, 4, true);
+            SetRgb(COLOUR_WHITE_ON_BLACK);
+            GotoXY(0, 23);
             system("pause");
             break;
         }
