@@ -12,13 +12,16 @@ Mail : Campbell.Roberts@mds.ac.nz
 
 #include <iostream>
 #include <windows.h>
+#include <cstdlib>
+#include <ctime>
+
 using namespace std;
 // Colour options for console text.
 enum EColour
 {
     COLOUR_WHITE_ON_BLACK = 0, 
     COLOUR_RED_ON_BLACK = 1, 
-    COLOUR_GREEN_ON_BLACK = 2, 
+    COLOUR_GREEN_ON_BLACK = 2,      
     COLOUR_YELLOW_ON_BLACK = 3,
     COLOUR_BLUE_ON_BLACK = 4,
     COLOUR_MAGENTA_ON_BLACK = 5,
@@ -43,6 +46,7 @@ const char OCEAN = '#';
 const char HIT = 'X';
 const char MISS = '?';
 const char SHIP = 'O';
+const int NUMSHIPS = 5;
 
 // Functions.
 void ClearScreen();
@@ -52,6 +56,8 @@ void DrawBox(int _iLeft, int _iTop, int _iWidth, int _iHeight);
 void FillGrid(char _cGrid[GRIDSIZE][GRIDSIZE]);
 void DrawGrid(char _cGrid[GRIDSIZE][GRIDSIZE], int _iLeft, int _iTop);
 void DrawLabels(int _iLeft, int _iTop);
+bool PlaceShip(char _cGrid[GRIDSIZE][GRIDSIZE], int _iRow, int _iCol, int _iLength, bool _bHorizontal);
+void AutoPlaceShips(char _cGrid[GRIDSIZE][GRIDSIZE]);
 void PrintHeader() {
     SetRgb(COLOUR_WHITE_ON_BLACK);
     cout << R"(
@@ -90,6 +96,7 @@ int main()
     int iMenuOption = 0;
     int WINS = 0;
     int MODE = 0;
+    srand(static_cast<unsigned int>(time(0)));
     do {
         ClearScreen();
         PrintHeader();
@@ -146,12 +153,15 @@ int main()
         }
         switch (iMenuOption) {
         case 1:
+        {
             ClearScreen();
-  
-            char cPlayerGrid[GRIDSIZE][GRIDSIZE]; 
+
+            char cPlayerGrid[GRIDSIZE][GRIDSIZE];
             char cEnemyGrid[GRIDSIZE][GRIDSIZE];
             FillGrid(cPlayerGrid);
             FillGrid(cEnemyGrid);
+            AutoPlaceShips(cPlayerGrid);
+            AutoPlaceShips(cEnemyGrid);
 
             //Playregrid (left)
             SetRgb(COLOUR_YELLOW_ON_BLACK);
@@ -183,6 +193,7 @@ int main()
             GotoXY(0, 20);
             system("pause");
             break;
+        }
         case 2:
 
             break;
@@ -326,6 +337,11 @@ void DrawGrid(char _cGrid[GRIDSIZE][GRIDSIZE], int _iLeft, int _iTop)
                 SetRgb(COLOUR_YELLOW_ON_BLACK);
                 break;
             }
+            case SHIP:
+            {
+                SetRgb(COLOUR_GREEN_ON_BLACK);
+                break;
+            }
             default:
             {
                 SetRgb(COLOUR_WHITE_ON_BLACK);
@@ -360,4 +376,68 @@ void DrawLabels(int _iLeft, int _iTop)
     }
 
     SetRgb(COLOUR_WHITE_ON_BLACK);
+}
+bool PlaceShip(char _cGrid[GRIDSIZE][GRIDSIZE], int _iRow, int _iCol, int _iLength, bool _bHorizontal)
+{
+    // first pass only checks every cell the ship would use
+    for (int iIndex = 0; iIndex < _iLength; ++iIndex)
+    {
+        int iCheckRow = _iRow;
+        int iCheckCol = _iCol;
+
+        if (_bHorizontal)
+        {
+            iCheckCol = _iCol + iIndex;
+        }
+        else
+        {
+            iCheckRow = _iRow + iIndex;
+        }
+
+        if (iCheckRow < 0 || iCheckRow >= GRIDSIZE || iCheckCol < 0 || iCheckCol >= GRIDSIZE)
+        {
+            return false;
+        }
+
+        // something already there
+        if (_cGrid[iCheckRow][iCheckCol] != OCEAN)
+        {
+            return false;
+        }
+    }
+
+    // second pass actually places it
+    for (int iIndex = 0; iIndex < _iLength; ++iIndex)
+    {
+        if (_bHorizontal)
+        {
+            _cGrid[_iRow][_iCol + iIndex] = SHIP;
+        }
+        else
+        {
+            _cGrid[_iRow + iIndex][_iCol] = SHIP;
+        }
+    }
+
+    return true;
+}
+
+void AutoPlaceShips(char _cGrid[GRIDSIZE][GRIDSIZE])
+{
+    int iShipLengths[NUMSHIPS] = { 5, 4, 3, 3, 2 };
+
+    for (int iShip = 0; iShip < NUMSHIPS; ++iShip)
+    {
+        bool bPlaced = false;
+
+        // keep trying random spots until the ship fits
+        while (!bPlaced)
+        {
+            int iRow = rand() % GRIDSIZE;
+            int iCol = rand() % GRIDSIZE;
+            bool bHorizontal = (rand() % 2 == 0);
+
+            bPlaced = PlaceShip(_cGrid, iRow, iCol, iShipLengths[iShip], bHorizontal);
+        }
+    }
 }
