@@ -290,7 +290,19 @@ void ClearScreen()
     GetConsoleScreenBufferInfo(hConsole, &csbi);
     FillConsoleOutputAttribute(hConsole, csbi.wAttributes, dwConSize, coordScreen, &cCharsWritten);
     SetConsoleCursorPosition(hConsole, coordScreen);
+
+    // wipe the scrollback too
+    std::cout << "\033[3J" << flush;
+
+    // scroll view back to the top
+    SMALL_RECT srWindow;
+    srWindow.Left = 0;
+    srWindow.Top = 0;
+    srWindow.Right = csbi.srWindow.Right - csbi.srWindow.Left;
+    srWindow.Bottom = csbi.srWindow.Bottom - csbi.srWindow.Top;
+    SetConsoleWindowInfo(hConsole, TRUE, &srWindow);
 }
+
 
 void SetRgb(EColour _eColour)
 {
