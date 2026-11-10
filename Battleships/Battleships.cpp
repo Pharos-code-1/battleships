@@ -66,6 +66,7 @@ Total shots, Hit + miss counter
 #include "Console.h"
 #include "Grid.h"
 #include "Screens.h"
+#include "Input.h"
 using namespace std;
 int main()
 {
@@ -149,7 +150,7 @@ int main()
             }
             else if (iMode == 1)
             {
-                // manual placement goes here later
+                ManualPlaceShips(cPlayerGrid);
             }
             else
             {

@@ -10,6 +10,7 @@ Author : Campbell Roberts
 Mail : Campbell.Roberts@mds.ac.nz
 **************************************************************************/
 #pragma once
+#include <string>
 // Constants.
 const int SCREENWIDTH = 80;
 const int SCREENHEIGHT = 24;
@@ -28,3 +29,8 @@ const int ENEMYGRIDX = 61;
 const int GRIDY = 13;
 const int PLACEMANUALX = 15;
 const int PLACEAUTOX = 57;
+const int PROMPTX = 38;
+const int PROMPTLINEY = 34;
+const int PROMPTY = 35;
+const int SHIPLENGTHS[NUMSHIPS] = { 5, 4, 3, 3, 2 };
+const std::string SHIPNAMES[NUMSHIPS] = { "Aircraft Carrier", "Battleship", "Destroyer", "Submarine", "Patrol Boat" };

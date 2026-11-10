@@ -3,6 +3,7 @@
 #include "Console.h"
 #include "Grid.h"
 
+
 using namespace std;
 void PrintHeader() {
     SetRgb(COLOUR_WHITE_ON_BLACK);
@@ -167,4 +168,24 @@ void DrawPlayScreen(char _cPlayerGrid[GRIDSIZE][GRIDSIZE], char _cEnemyGrid[GRID
 
     // cursor after the prompt ready for input
     GotoXY(64, 35);
+}
+void ShowPrompt(const string& _sLine, const string& _sPrompt)
+{
+    // wipe the two rows inside the yellow frame
+    for (int iY = PROMPTLINEY; iY <= PROMPTY; ++iY)
+    {
+        GotoXY(FRAMELEFTX + 1, iY);
+        for (int iX = FRAMELEFTX + 1; iX < FRAMERIGHTX; ++iX)
+        {
+            cout << " ";
+        }
+    }
+
+    // message on the top row and the prompt on the row below
+    SetRgb(COLOUR_WHITE_ON_BLACK);
+    GotoXY(PROMPTX, PROMPTLINEY);
+    cout << _sLine;
+    SetRgb(COLOUR_YELLOW_ON_BLACK);
+    GotoXY(PROMPTX, PROMPTY);
+    cout << _sPrompt;
 }
