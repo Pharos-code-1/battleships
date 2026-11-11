@@ -67,12 +67,14 @@ Total shots, Hit + miss counter
 #include "Grid.h"
 #include "Screens.h"
 #include "Input.h"
+#include <string>
+#include <ctime>
 using namespace std;
 int main()
 {
     int iMenuOption = 0;
-    int iWins = 0;
     int iMode = 0;
+    bool bDebug = false;
     srand(static_cast<unsigned int>(time(0)));
     do {
         ClearScreen();
@@ -95,6 +97,8 @@ int main()
         cout <<
             R"(         |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
          |                                                                                 |)" << endl;
+        // debug option on the blank row
+        cout << "         |  5) Debug Mode: " << (bDebug ? "ON " : "OFF") << string(61, ' ') << "|" << endl;
         const int RIGHTBORDERX = 91;
         const int NUMBERX = 12;
         const int FIRSTNUMBERY = 13;
@@ -140,10 +144,21 @@ int main()
             ///AutoPlaceShips(cPlayerGrid);
             AutoPlaceShips(cEnemyGrid);
 
+            DrawPlayScreen(cPlayerGrid, cEnemyGrid, bDebug);
+            // keep asking until the choice is 1 or 2
+            iMode = 0;
+            while(iMode != 1 && iMode != 2)
+            {
+                cin >> iMode;
+                cin.clear();
+                cin.ignore(1000, '\n');
 
-            DrawPlayScreen(cPlayerGrid, cEnemyGrid);
-            cin >> iMode;
-
+                if (iMode != 1 && iMode != 2)
+                {
+                    iMode = 0;
+                    ShowPrompt("Invalid input, enter 1 or 2", "Please enter your choice: ");
+                }
+            }
             if (iMode == 2)
             {
                 AutoPlaceShips(cPlayerGrid);
@@ -152,13 +167,9 @@ int main()
             {
                 ManualPlaceShips(cPlayerGrid);
             }
-            else
-            {
-                // input, do later
-            }
 
             SetRgb(COLOUR_YELLOW_ON_BLACK);
-            DrawGrid(cPlayerGrid, PLAYERGRIDX, GRIDY, true);
+            DrawGrid(cPlayerGrid, PLAYERGRIDX, GRIDY, !bDebug);
             ClearPlacementBoxes();
 
             int iPlayerShots = 0;
@@ -220,7 +231,7 @@ int main()
                                 ++iEnemyMisses;
                                 ShowPrompt(string("Enemy fired at ") + char('A' + iEnemyCol) + to_string(iEnemyRow + 1) + ": Miss");
                             }
-                            DrawGrid(cPlayerGrid, PLAYERGRIDX, GRIDY, true);
+                            DrawGrid(cPlayerGrid, PLAYERGRIDX, GRIDY, !bDebug);
                             DrawStats(ENEMYGRIDX + 6, iEnemyShots, iEnemyHits, iEnemyMisses);
                             Sleep(1500);
                         }
@@ -234,27 +245,21 @@ int main()
             }
 
             // whoever still has ships won
-            if (HasShips(cPlayerGrid))
-            {
-                ShowPrompt("VICTORY, you sank the enemy fleet!");
-            }
-            else
-            {
-                ShowPrompt("DEFEAT, the enemy sank your fleet!");
-            }
-            SetRgb(COLOUR_WHITE_ON_BLACK);
-            GotoXY(0, 38);
-            system("pause");
+            ShowSummary(HasShips(cPlayerGrid), iPlayerShots, iPlayerHits, iEnemyShots, iEnemyHits);
             break;
         }
         case 2:
-
+            ShowInstructions();
             break;
         case 3:
-
+            ShowCredits();
             break;
         case 4:
 
+            break;
+        case 5:
+            // flip debug on or off
+            bDebug = !bDebug;
             break;
         default:
             cout << "\nInvalid option, please choose 1 to 4.\n" << endl;

@@ -80,7 +80,7 @@ void DrawFrameSides(int _iTop, int _iBottom)
     }
 }
 
-void DrawPlayScreen(char _cPlayerGrid[GRIDSIZE][GRIDSIZE], char _cEnemyGrid[GRIDSIZE][GRIDSIZE])
+void DrawPlayScreen(char _cPlayerGrid[GRIDSIZE][GRIDSIZE], char _cEnemyGrid[GRIDSIZE][GRIDSIZE], bool _bDebug)
 {
     ClearScreen();
     PrintHeader();
@@ -94,13 +94,13 @@ void DrawPlayScreen(char _cPlayerGrid[GRIDSIZE][GRIDSIZE], char _cEnemyGrid[GRID
     // player grid (left)
     SetRgb(COLOUR_YELLOW_ON_BLACK);
     DrawBox(PLAYERGRIDX, GRIDY, 22, 12);
-    DrawGrid(_cPlayerGrid, PLAYERGRIDX, GRIDY, true);
+    DrawGrid(_cPlayerGrid, PLAYERGRIDX, GRIDY, !_bDebug);
     DrawLabels(PLAYERGRIDX, GRIDY);
 
     // enemy grid (right)
     SetRgb(COLOUR_YELLOW_ON_BLACK);
     DrawBox(ENEMYGRIDX, GRIDY, 22, 12);
-    DrawGrid(_cEnemyGrid, ENEMYGRIDX, GRIDY, false);
+    DrawGrid(_cEnemyGrid, ENEMYGRIDX, GRIDY, _bDebug);
     DrawLabels(ENEMYGRIDX, GRIDY);
 
     // red middle bar
@@ -219,4 +219,131 @@ void ClearPlacementBoxes()
         GotoXY(DIVIDERX, iY);
         cout << "|";
     }
+}
+void ShowSummary(bool _bWon, int _iPlayerShots, int _iPlayerHits, int _iEnemyShots, int _iEnemyHits)
+{
+    ClearScreen();
+    PrintHeader();
+
+    // blue wave under the title then white sides
+    SetRgb(COLOUR_BLUE_ON_BLACK);
+    DrawFrameLine(10, '~');
+    SetRgb(COLOUR_WHITE_ON_BLACK);
+    DrawFrameSides(11, 25);
+
+    // victory or defeat
+    if (_bWon)
+    {
+        SetRgb(COLOUR_GREEN_ON_BLACK);
+        GotoXY(41, 13);
+        cout << "*** VICTORY ***";
+    }
+    else
+    {
+        SetRgb(COLOUR_RED_ON_BLACK);
+        GotoXY(41, 13);
+        cout << "*** DEFEAT ***";
+    }
+
+    // shots hits and misses for both sides
+    SetRgb(COLOUR_YELLOW_ON_BLACK);
+    GotoXY(40, 16);
+    cout << "You";
+    GotoXY(54, 16);
+    cout << "Enemy";
+
+    SetRgb(COLOUR_WHITE_ON_BLACK);
+    GotoXY(30, 17);
+    cout << "Shots:";
+    GotoXY(40, 17);
+    cout << _iPlayerShots;
+    GotoXY(54, 17);
+    cout << _iEnemyShots;
+    GotoXY(30, 18);
+    cout << "Hits:";
+    GotoXY(40, 18);
+    cout << _iPlayerHits;
+    GotoXY(54, 18);
+    cout << _iEnemyHits;
+    GotoXY(30, 19);
+    cout << "Misses:";
+    GotoXY(40, 19);
+    cout << _iPlayerShots - _iPlayerHits;
+    GotoXY(54, 19);
+    cout << _iEnemyShots - _iEnemyHits;
+
+    SetRgb(COLOUR_YELLOW_ON_BLACK);
+    GotoXY(34, 23);
+    cout << "Press enter to return to the menu";
+    DrawFrameLine(26, '=');
+
+    cin.get();
+}
+
+void ShowInstructions()
+{
+    ClearScreen();
+    PrintHeader();
+
+    // blue wave under the title then white sides
+    SetRgb(COLOUR_BLUE_ON_BLACK);
+    DrawFrameLine(10, '~');
+    SetRgb(COLOUR_WHITE_ON_BLACK);
+    DrawFrameSides(11, 25);
+
+    GotoXY(40, 12);
+    cout << "HOW TO PLAY";
+    GotoXY(15, 14);
+    cout << "Place your 5 ships on your grid (left), by hand or at random";
+    GotoXY(15, 15);
+    cout << "Ships are 5, 4, 3, 3 and 2 cells long and cannot overlap";
+    GotoXY(15, 17);
+    cout << "Manual placement: type a letter, a number and H or V, eg B7 H";
+    GotoXY(15, 18);
+    cout << "H runs the ship right from that cell, V runs it down";
+    GotoXY(15, 20);
+    cout << "Take turns firing at the enemy grid (right), eg B7";
+    GotoXY(15, 21);
+    cout << "X is a hit, ? is a miss, # is ocean, O is one of your ships";
+    GotoXY(15, 22);
+    cout << "Sink all 5 enemy ships before they sink yours to win";
+    GotoXY(15, 24);
+    cout << "Debug mode (menu option 5) shows the enemy ships";
+
+    SetRgb(COLOUR_YELLOW_ON_BLACK);
+    GotoXY(34, 25);
+    cout << "Press enter to return to the menu";
+    DrawFrameLine(26, '=');
+
+    cin.get();
+}
+
+void ShowCredits()
+{
+    ClearScreen();
+    PrintHeader();
+
+    // blue wave under the title then white sides
+    SetRgb(COLOUR_BLUE_ON_BLACK);
+    DrawFrameLine(10, '~');
+    SetRgb(COLOUR_WHITE_ON_BLACK);
+    DrawFrameSides(11, 25);
+
+    GotoXY(40, 13);
+    cout << "CREDITS";
+    GotoXY(15, 15);
+    cout << "Game by Campbell Roberts";
+    GotoXY(15, 16);
+    cout << "Media Design School, GD1P01";
+    GotoXY(15, 18);
+    cout << "Title art: https://ascii.co.uk/art/battleships";
+    GotoXY(15, 19);
+    cout << "Submarine art: https://www.asciiart.eu/art/49d8fc2dbf033525";
+
+    SetRgb(COLOUR_YELLOW_ON_BLACK);
+    GotoXY(34, 25);
+    cout << "Press enter to return to the menu";
+    DrawFrameLine(26, '=');
+
+    cin.get();
 }
