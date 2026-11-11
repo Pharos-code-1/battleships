@@ -150,3 +150,59 @@ void AutoPlaceShips(char _cGrid[GRIDSIZE][GRIDSIZE])
         }
     }
 }
+EShotResult FireShot(char& _rcCell) // TF: Reference
+{
+    // ship in the cell so its a hit
+    if (_rcCell == SHIP)
+    {
+        _rcCell = HIT;
+        return SHOT_HIT;
+    }
+    // ocean so its a miss
+    else if (_rcCell == OCEAN)
+    {
+        _rcCell = MISS;
+        return SHOT_MISS;
+    }
+    // already fired here
+    else
+    {
+        return SHOT_REPEAT;
+    }
+}
+
+bool HasShips(char _cGrid[GRIDSIZE][GRIDSIZE])
+{
+    // any ship cell left means the game carries on
+    for (int iRow = 0; iRow < GRIDSIZE; ++iRow)
+    {
+        for (int iCol = 0; iCol < GRIDSIZE; ++iCol)
+        {
+            if (_cGrid[iRow][iCol] == SHIP)
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+EShotResult ComputerShoot(char _cGrid[GRIDSIZE][GRIDSIZE], int& _riRow, int& _riCol)
+{
+    bool bFound = false;
+
+    // pick random cells until one hasnt been fired at
+    while (!bFound)
+    {
+        _riRow = rand() % GRIDSIZE; // TF: Pseudo Random Number
+        _riCol = rand() % GRIDSIZE;
+
+        if (_cGrid[_riRow][_riCol] != HIT && _cGrid[_riRow][_riCol] != MISS)
+        {
+            bFound = true;
+        }
+    }
+
+    return FireShot(_cGrid[_riRow][_riCol]);
+}

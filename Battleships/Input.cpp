@@ -105,3 +105,46 @@ void ManualPlaceShips(char _cGrid[GRIDSIZE][GRIDSIZE])
 
     ShowPrompt("All ships placed");
 }
+bool ReadTarget(int& _riRow, int& _riCol)
+{
+    char cLetter = ' ';
+    int iNumber = 0;
+
+    cin >> cLetter >> iNumber;
+
+    // clear any bad input and throw away the rest of the line
+    bool bFailed = cin.fail();
+    cin.clear();
+    cin.ignore(1000, '\n');
+
+    if (bFailed)
+    {
+        return false;
+    }
+
+    // letter has to be a to j
+    int iCol = 0;
+    if (cLetter >= 'A' && cLetter <= 'J')
+    {
+        iCol = cLetter - 'A';
+    }
+    else if (cLetter >= 'a' && cLetter <= 'j')
+    {
+        iCol = cLetter - 'a';
+    }
+    else
+    {
+        return false;
+    }
+
+    // number has to be 1 to 10
+    if (iNumber < 1 || iNumber > GRIDSIZE)
+    {
+        return false;
+    }
+
+    // correct so sends values back
+    _riRow = iNumber - 1;
+    _riCol = iCol;
+    return true;
+}

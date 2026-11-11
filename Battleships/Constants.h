@@ -34,3 +34,6 @@ const int PROMPTLINEY = 34;
 const int PROMPTY = 35;
 const int SHIPLENGTHS[NUMSHIPS] = { 5, 4, 3, 3, 2 };
 const std::string SHIPNAMES[NUMSHIPS] = { "Aircraft Carrier", "Battleship", "Destroyer", "Submarine", "Patrol Boat" };
+const int STATSY = 26;
+const int PLACEBOXTOP = 30;
+const int PLACEBOXBOTTOM = 32;

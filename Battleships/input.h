@@ -3,3 +3,4 @@
 
 bool ReadShipInput(int& _riRow, int& _riCol, bool& _rbHorizontal);
 void ManualPlaceShips(char _cGrid[GRIDSIZE][GRIDSIZE]);
+bool ReadTarget(int& _riRow, int& _riCol);

@@ -159,6 +159,89 @@ int main()
 
             SetRgb(COLOUR_YELLOW_ON_BLACK);
             DrawGrid(cPlayerGrid, PLAYERGRIDX, GRIDY, true);
+            ClearPlacementBoxes();
+
+            int iPlayerShots = 0;
+            int iPlayerHits = 0;
+            int iPlayerMisses = 0;
+            int iEnemyShots = 0;
+            int iEnemyHits = 0;
+            int iEnemyMisses = 0;
+
+            // keep taking turns until one side has no ships left
+            while (HasShips(cPlayerGrid) && HasShips(cEnemyGrid))
+            {
+                // player turn
+                int iRow = 0;
+                int iCol = 0;
+                ShowPrompt("Fire at the enemy grid, eg B7", "Enter your target: ");
+
+                if (ReadTarget(iRow, iCol))
+                {
+                    EShotResult eResult = FireShot(cEnemyGrid[iRow][iCol]);
+
+                    if (eResult == SHOT_REPEAT)
+                    {
+                        ShowPrompt("You already fired there, try again");
+                        Sleep(1500);
+                    }
+                    else
+                    {
+                        ++iPlayerShots;
+                        if (eResult == SHOT_HIT)
+                        {
+                            ++iPlayerHits;
+                            ShowPrompt("Hit!");
+                        }
+                        else
+                        {
+                            ++iPlayerMisses;
+                            ShowPrompt("Miss");
+                        }
+                        DrawGrid(cEnemyGrid, ENEMYGRIDX, GRIDY, false);
+                        DrawStats(PLAYERGRIDX + 7, iPlayerShots, iPlayerHits, iPlayerMisses);
+                        Sleep(900);
+
+                        // enemy turn, only if player didnt just win
+                        if (HasShips(cEnemyGrid))
+                        {
+                            int iEnemyRow = 0;
+                            int iEnemyCol = 0;
+                            EShotResult eEnemyResult = ComputerShoot(cPlayerGrid, iEnemyRow, iEnemyCol);
+
+                            ++iEnemyShots;
+                            if (eEnemyResult == SHOT_HIT)
+                            {
+                                ++iEnemyHits;
+                                ShowPrompt(string("Enemy fired at ") + char('A' + iEnemyCol) + to_string(iEnemyRow + 1) + ": Hit!");
+                            }
+                            else
+                            {
+                                ++iEnemyMisses;
+                                ShowPrompt(string("Enemy fired at ") + char('A' + iEnemyCol) + to_string(iEnemyRow + 1) + ": Miss");
+                            }
+                            DrawGrid(cPlayerGrid, PLAYERGRIDX, GRIDY, true);
+                            DrawStats(ENEMYGRIDX + 6, iEnemyShots, iEnemyHits, iEnemyMisses);
+                            Sleep(1500);
+                        }
+                    }
+                }
+                else
+                {
+                    ShowPrompt("Invalid input, eg B7");
+                    Sleep(1500);
+                }
+            }
+
+            // whoever still has ships won
+            if (HasShips(cPlayerGrid))
+            {
+                ShowPrompt("VICTORY, you sank the enemy fleet!");
+            }
+            else
+            {
+                ShowPrompt("DEFEAT, the enemy sank your fleet!");
+            }
             SetRgb(COLOUR_WHITE_ON_BLACK);
             GotoXY(0, 38);
             system("pause");

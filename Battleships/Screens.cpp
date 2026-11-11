@@ -189,3 +189,34 @@ void ShowPrompt(const string& _sLine, const string& _sPrompt)
     GotoXY(PROMPTX, PROMPTY);
     cout << _sPrompt;
 }
+void DrawStats(int _iX, int _iShots, int _iHits, int _iMisses)
+{
+    SetRgb(COLOUR_WHITE_ON_BLACK);
+    GotoXY(_iX + 8, STATSY);
+    cout << _iShots << "   ";
+    GotoXY(_iX + 8, STATSY + 1);
+    cout << _iHits << "   ";
+    GotoXY(_iX + 8, STATSY + 2);
+    cout << _iMisses << "   ";
+}
+
+void ClearPlacementBoxes()
+{
+    // wipe the 2 placement boxes
+    for (int iY = PLACEBOXTOP; iY <= PLACEBOXBOTTOM; ++iY)
+    {
+        GotoXY(FRAMELEFTX + 1, iY);
+        for (int iX = FRAMELEFTX + 1; iX < FRAMERIGHTX; ++iX)
+        {
+            cout << " ";
+        }
+    }
+
+    // put the red bar back
+    SetRgb(COLOUR_RED_ON_BLACK);
+    for (int iY = PLACEBOXTOP; iY <= PLACEBOXBOTTOM; ++iY)
+    {
+        GotoXY(DIVIDERX, iY);
+        cout << "|";
+    }
+}
