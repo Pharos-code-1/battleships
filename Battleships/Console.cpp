@@ -1,3 +1,14 @@
+/***********************************************************************
+Bachelor of Software Engineering
+Media Design School at Strayer
+Auckland
+New Zealand
+(c) 2026 Media Design School at Strayer
+File Name : Console.cpp
+Description : colour, cursor, clear screen and window size functions
+Author : Campbell Roberts
+Mail : Campbell.Roberts@mds.ac.nz
+**************************************************************************/
 #include <iostream>
 #include "Console.h"
 
@@ -79,5 +90,44 @@ void SetRgb(EColour _eColour)
             FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
         break;
     }
+    }
+}
+int GetWindowHeight()
+{
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+    return csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+}
+
+void MakeFullscreen(int _iRows)
+{
+    // only press alt enter if the window is too short
+    if (GetWindowHeight() < _iRows)
+    {
+        keybd_event(VK_MENU, 0, 0, 0);
+        keybd_event(VK_RETURN, 0, 0, 0);
+        keybd_event(VK_RETURN, 0, KEYEVENTF_KEYUP, 0);
+        keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0);
+
+        // give the window a moment to change size
+        Sleep(500);
+    }
+}
+
+void WaitForWindowHeight(int _iRows)
+{
+    bool bWarned = false;
+
+    // wait until the window is tall enough
+    while (GetWindowHeight() < _iRows)
+    {
+        if (!bWarned)
+        {
+            ClearScreen();
+            SetRgb(COLOUR_WHITE_ON_BLACK);
+            cout << "Window too small, maximise it to continue" << endl;
+            bWarned = true;
+        }
+        Sleep(300);
     }
 }

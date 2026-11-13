@@ -68,7 +68,6 @@ Total shots, Hit + miss counter
 #include "Screens.h"
 #include "Input.h"
 #include <string>
-#include <ctime>
 using namespace std;
 int main()
 {
@@ -76,7 +75,12 @@ int main()
     int iMode = 0;
     bool bDebug = false;
     srand(static_cast<unsigned int>(time(0)));
+    // try to go fullscreen before anything is drawn
+    MakeFullscreen(MINWINDOWROWS);
+
     do {
+        // wait here if the window is too short
+        WaitForWindowHeight(MINWINDOWROWS);
         ClearScreen();
         PrintHeader();
         PrintAscii();
@@ -101,7 +105,7 @@ int main()
         cout << "         |  5) Debug Mode: " << (bDebug ? "ON " : "OFF") << string(61, ' ') << "|" << endl;
         const int RIGHTBORDERX = 91;
         const int NUMBERX = 12;
-        const int FIRSTNUMBERY = 13;
+        const int FIRSTNUMBERY = 14;
         const int NUMBERSPACING = 3;
         cout << "         |                            Please enter your choice: ";
         // get cursor pos right after the prompt.
@@ -132,6 +136,7 @@ int main()
             Sleep(1500);
             continue;
         }
+        cin.ignore(1000, '\n');
         switch (iMenuOption) {
         case 1:
         {
@@ -209,7 +214,7 @@ int main()
                             ++iPlayerMisses;
                             ShowPrompt("Miss");
                         }
-                        DrawGrid(cEnemyGrid, ENEMYGRIDX, GRIDY, false);
+                        DrawGrid(cEnemyGrid, ENEMYGRIDX, GRIDY, bDebug);
                         DrawStats(PLAYERGRIDX + 7, iPlayerShots, iPlayerHits, iPlayerMisses);
                         Sleep(900);
 
@@ -262,7 +267,7 @@ int main()
             bDebug = !bDebug;
             break;
         default:
-            cout << "\nInvalid option, please choose 1 to 4.\n" << endl;
+            cout << "\nInvalid option, please choose 1 to 5.\n" << endl;
             Sleep(1500);
             break;
         }

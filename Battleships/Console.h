@@ -1,3 +1,14 @@
+/***********************************************************************
+Bachelor of Software Engineering
+Media Design School at Strayer
+Auckland
+New Zealand
+(c) 2026 Media Design School at Strayer
+File Name : Console.h
+Description : colour enum and console helper prototypes
+Author : Campbell Roberts
+Mail : Campbell.Roberts@mds.ac.nz
+**************************************************************************/
 #include <windows.h>
 #pragma once
 // Colour options for console text.
@@ -25,3 +36,6 @@ enum EColour
 void ClearScreen();
 void GotoXY(int _iX, int _iY);
 void SetRgb(EColour _eColour);
+int GetWindowHeight();
+void MakeFullscreen(int _iRows);
+void WaitForWindowHeight(int _iRows);

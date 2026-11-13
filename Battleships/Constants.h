@@ -37,3 +37,4 @@ const std::string SHIPNAMES[NUMSHIPS] = { "Aircraft Carrier", "Battleship", "Des
 const int STATSY = 26;
 const int PLACEBOXTOP = 30;
 const int PLACEBOXBOTTOM = 32;
+const int MINWINDOWROWS = 41;
