@@ -1,9 +1,21 @@
+/***********************************************************************
+Bachelor of Software Engineering
+Media Design School at Strayer
+Auckland
+New Zealand
+(c) 2026 Media Design School at Strayer
+File Name : Input.cpp
+Description : main source file for console Battleships game
+Author : Campbell Roberts
+Mail : Campbell.Roberts@mds.ac.nz
+**************************************************************************/
 #include <iostream>
 #include <string>
 #include "Input.h"
 #include "Console.h"
 #include "Grid.h"
 #include "Screens.h"
+#include "Fleet.h"
 
 using namespace std;
 
@@ -66,7 +78,7 @@ bool ReadShipInput(int& _riRow, int& _riCol, bool& _rbHorizontal)
     return true;
 }
 
-void ManualPlaceShips(char _cGrid[GRIDSIZE][GRIDSIZE])
+void ManualPlaceShips(char _cGrid[GRIDSIZE][GRIDSIZE], CFleet* _pFleet)
 {
     for (int iShip = 0; iShip < NUMSHIPS; ++iShip)
     {
@@ -84,7 +96,7 @@ void ManualPlaceShips(char _cGrid[GRIDSIZE][GRIDSIZE])
 
             if (ReadShipInput(iRow, iCol, bHorizontal))
             {
-                bPlaced = PlaceShip(_cGrid, iRow, iCol, SHIPLENGTHS[iShip], bHorizontal);
+                bPlaced = PlaceShip(_cGrid, iRow, iCol, SHIPLENGTHS[iShip], bHorizontal, _pFleet);
 
                 if (!bPlaced)
                 {

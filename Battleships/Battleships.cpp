@@ -146,8 +146,10 @@ int main()
             char cEnemyGrid[GRIDSIZE][GRIDSIZE];
             FillGrid(cPlayerGrid);
             FillGrid(cEnemyGrid);
+            CFleet cPlayerFleet;
+            CFleet cEnemyFleet;
             ///AutoPlaceShips(cPlayerGrid);
-            AutoPlaceShips(cEnemyGrid);
+            AutoPlaceShips(cEnemyGrid,&cEnemyFleet);
 
             DrawPlayScreen(cPlayerGrid, cEnemyGrid, bDebug);
             // keep asking until the choice is 1 or 2
@@ -166,16 +168,17 @@ int main()
             }
             if (iMode == 2)
             {
-                AutoPlaceShips(cPlayerGrid);
+                AutoPlaceShips(cPlayerGrid, &cPlayerFleet);
             }
             else if (iMode == 1)
             {
-                ManualPlaceShips(cPlayerGrid);
+                ManualPlaceShips(cPlayerGrid, &cPlayerFleet);
             }
 
             SetRgb(COLOUR_YELLOW_ON_BLACK);
             DrawGrid(cPlayerGrid, PLAYERGRIDX, GRIDY, !bDebug);
             ClearPlacementBoxes();
+            
 
             int iPlayerShots = 0;
             int iPlayerHits = 0;
@@ -207,7 +210,15 @@ int main()
                         if (eResult == SHOT_HIT)
                         {
                             ++iPlayerHits;
-                            ShowPrompt("Hit!");
+                            bool bSunk = cEnemyFleet.RegisterHit(iRow, iCol);
+                            if (bSunk)
+                            {
+                                ShowPrompt("Hit! Enemy ship sunk!");
+                            }
+                            else
+                            {
+                                ShowPrompt("Hit!");
+                            }
                         }
                         else
                         {
@@ -229,7 +240,15 @@ int main()
                             if (eEnemyResult == SHOT_HIT)
                             {
                                 ++iEnemyHits;
-                                ShowPrompt(string("Enemy fired at ") + char('A' + iEnemyCol) + to_string(iEnemyRow + 1) + ": Hit!");
+                                bool bSunk = cPlayerFleet.RegisterHit(iEnemyRow, iEnemyCol);
+                                if (bSunk)
+                                {
+                                    ShowPrompt(string("Enemy fired at ") + char('A' + iEnemyCol) + to_string(iEnemyRow + 1) + ": Hit! Your ship was sunk!");
+                                }
+                                else
+                                {
+                                    ShowPrompt(string("Enemy fired at ") + char('A' + iEnemyCol) + to_string(iEnemyRow + 1) + ": Hit!");
+                                }
                             }
                             else
                             {
@@ -250,7 +269,7 @@ int main()
             }
 
             // whoever still has ships won
-            ShowSummary(HasShips(cPlayerGrid), iPlayerShots, iPlayerHits, iEnemyShots, iEnemyHits);
+            ShowSummary(HasShips(cPlayerGrid), iPlayerShots, iPlayerHits, iEnemyShots, iEnemyHits, cEnemyFleet.GetShipsSunk());
             break;
         }
         case 2:
@@ -260,7 +279,6 @@ int main()
             ShowCredits();
             break;
         case 4:
-
             break;
         case 5:
             // flip debug on or off

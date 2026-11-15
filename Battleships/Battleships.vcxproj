@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="Battleships.cpp" />
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="Fleet.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Screens.cpp" />
@@ -148,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="Console.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="Fleet.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="Screens.h" />

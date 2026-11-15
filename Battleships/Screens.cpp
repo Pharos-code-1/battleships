@@ -1,3 +1,14 @@
+/***********************************************************************
+Bachelor of Software Engineering
+Media Design School at Strayer
+Auckland
+New Zealand
+(c) 2026 Media Design School at Strayer
+File Name : Screens.cpp
+Description : main source file for console Battleships game
+Author : Campbell Roberts
+Mail : Campbell.Roberts@mds.ac.nz
+**************************************************************************/
 #include <iostream>
 #include "Screens.h"
 #include "Console.h"
@@ -220,7 +231,7 @@ void ClearPlacementBoxes()
         cout << "|";
     }
 }
-void ShowSummary(bool _bWon, int _iPlayerShots, int _iPlayerHits, int _iEnemyShots, int _iEnemyHits)
+void ShowSummary(bool _bWon, int _iPlayerShots, int _iPlayerHits, int _iEnemyShots, int _iEnemyHits,int _iShipsSunk)
 {
     ClearScreen();
     PrintHeader();
@@ -271,10 +282,13 @@ void ShowSummary(bool _bWon, int _iPlayerShots, int _iPlayerHits, int _iEnemySho
     cout << _iPlayerShots - _iPlayerHits;
     GotoXY(54, 19);
     cout << _iEnemyShots - _iEnemyHits;
-
+    GotoXY(30, 21);
+    cout << "Enemy ships sunk:";
+    GotoXY(48, 21);
+    cout << _iShipsSunk;
     SetRgb(COLOUR_YELLOW_ON_BLACK);
-    GotoXY(34, 23);
-    cout << "Press enter to return to the menu";
+    GotoXY(24, 23);
+    cout << "Press enter to return to the menu, then choose 1 for a new game.";
     DrawFrameLine(26, '=');
 
     cin.get();

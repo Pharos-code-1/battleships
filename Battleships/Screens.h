@@ -1,3 +1,14 @@
+/***********************************************************************
+Bachelor of Software Engineering
+Media Design School at Strayer
+Auckland
+New Zealand
+(c) 2026 Media Design School at Strayer
+File Name : Screens.h
+Description : main source file for console Battleships game
+Author : Campbell Roberts
+Mail : Campbell.Roberts@mds.ac.nz
+**************************************************************************/
 #pragma once
 #include "Constants.h"
 #include <string>
@@ -10,6 +21,6 @@ void DrawPlayScreen(char _cPlayerGrid[GRIDSIZE][GRIDSIZE], char _cEnemyGrid[GRID
 void ShowPrompt(const std::string& _sLine, const std::string& _sPrompt = "");
 void DrawStats(int _iX, int _iShots, int _iHits, int _iMisses);
 void ClearPlacementBoxes();
-void ShowSummary(bool _bWon, int _iPlayerShots, int _iPlayerHits, int _iEnemyShots, int _iEnemyHits);
+void ShowSummary(bool _bWon, int _iPlayerShots, int _iPlayerHits, int _iEnemyShots, int _iEnemyHits, int _iShipsSunk);
 void ShowInstructions();
 void ShowCredits();

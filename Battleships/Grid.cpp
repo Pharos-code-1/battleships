@@ -1,7 +1,19 @@
+/***********************************************************************
+Bachelor of Software Engineering
+Media Design School at Strayer
+Auckland
+New Zealand
+(c) 2026 Media Design School at Strayer
+File Name : Grid.cpp
+Description : main source file for console Battleships game
+Author : Campbell Roberts
+Mail : Campbell.Roberts@mds.ac.nz
+**************************************************************************/
 #include <iostream>
 #include <cstdlib>
 #include "Grid.h"
 #include "Console.h"
+#include "Fleet.h"
 
 using namespace std;
 //fill grid with the ocean (#)
@@ -86,7 +98,7 @@ void DrawLabels(int _iLeft, int _iTop)
 
     SetRgb(COLOUR_WHITE_ON_BLACK);
 }
-bool PlaceShip(char _cGrid[GRIDSIZE][GRIDSIZE], int _iRow, int _iCol, int _iLength, bool _bHorizontal)
+bool PlaceShip(char _cGrid[GRIDSIZE][GRIDSIZE], int _iRow, int _iCol, int _iLength, bool _bHorizontal, CFleet* _pFleet)
 {
     // first pass only checks every cell the ship would use
     for (int iIndex = 0; iIndex < _iLength; ++iIndex)
@@ -128,10 +140,15 @@ bool PlaceShip(char _cGrid[GRIDSIZE][GRIDSIZE], int _iRow, int _iCol, int _iLeng
         }
     }
 
+    // tell the fleet where this ship is
+    if (_pFleet != nullptr)
+    {
+        _pFleet->AddShipCells(_iRow, _iCol, _iLength, _bHorizontal);
+    }
     return true;
 }
 
-void AutoPlaceShips(char _cGrid[GRIDSIZE][GRIDSIZE])
+void AutoPlaceShips(char _cGrid[GRIDSIZE][GRIDSIZE], CFleet* _pFleet)
 {
     int iShipLengths[NUMSHIPS] = { 5, 4, 3, 3, 2 };
 
@@ -146,7 +163,7 @@ void AutoPlaceShips(char _cGrid[GRIDSIZE][GRIDSIZE])
             int iCol = rand() % GRIDSIZE;
             bool bHorizontal = (rand() % 2 == 0);
 
-            bPlaced = PlaceShip(_cGrid, iRow, iCol, iShipLengths[iShip], bHorizontal);
+            bPlaced = PlaceShip(_cGrid, iRow, iCol, iShipLengths[iShip], bHorizontal, _pFleet);
         }
     }
 }
