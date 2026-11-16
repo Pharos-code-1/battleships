@@ -12,7 +12,7 @@ Mail : Campbell.Roberts@mds.ac.nz
 #pragma once
 #include <string>
 // Constants.
-const int SCREENWIDTH = 80;
+const int SCREENWIDTH = 80;// TF: Constant
 const int SCREENHEIGHT = 24;
 const int GRIDSIZE = 10;
 const int CELLWIDTH = 2;

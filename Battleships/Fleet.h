@@ -22,14 +22,17 @@ struct SShip
     bool bSunk;
 };
 
-class CFleet
+class CFleet// TF: Class
 {
-private:
-    SShip m_Ships[NUMSHIPS];
+private:// TF: Access Specifier
+    SShip* m_pShips;
     int m_iShipCount;
 
 public:
     CFleet();
+    CFleet(const CFleet& _rOther);
+    ~CFleet();
+    CFleet& operator=(const CFleet&) = delete;
     void AddShipCells(int _iRow, int _iCol, int _iLength, bool _bHorizontal);
     bool RegisterHit(int _iRow, int _iCol);
     int GetShipsSunk() const;

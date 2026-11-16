@@ -31,7 +31,7 @@ void ClearScreen()
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
     GetConsoleScreenBufferInfo(hConsole, &csbi);
-    dwConSize = csbi.dwSize.X * csbi.dwSize.Y;
+    dwConSize = csbi.dwSize.X * csbi.dwSize.Y;// TF: Arithmetic Operator
     FillConsoleOutputCharacter(hConsole, TEXT(' '), dwConSize, coordScreen, &cCharsWritten);
     GetConsoleScreenBufferInfo(hConsole, &csbi);
     FillConsoleOutputAttribute(hConsole, csbi.wAttributes, dwConSize, coordScreen, &cCharsWritten);

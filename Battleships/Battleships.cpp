@@ -9,55 +9,6 @@ Description : main source file for console Battleships game
 Author : Campbell Roberts
 Mail : Campbell.Roberts@mds.ac.nz
 **************************************************************************/
-/*
-TO DO LATER MAYBE:
-Change ships from O to <=>/<==>/<===> etc
-Total shots, Hit + miss counter
-    int WINS = 0; in main unused, wins counter later or delete
-*/
-
-/*
-         |=================================================================================|
-         |                _           _   _   _           _     _                          |
-         |               | |         | | | | | |         | |   (_)                         |
-         |               | |__   __ _| |_| |_| | ___  ___| |__  _ _ __  ___                |
-         |               | '_ \ / _` | __| __| |/ _ \/ __| '_ \| | '_ \/ __|               |
-         |               | |_) | (_| | |_| |_| |  __/\__ \ | | | | |_) \__ \               |
-         |               |_.__/ \__,_|\__|\__|_|\___||___/_| |_|_| .__/|___/               |
-         |                                                     | |                         |
-         |                                                     |_|                         |
-         |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
-         |                                                                                 |
-         |                 A B C D E F G H I J     |     A B C D E F G H I J               |
-         |                ----------------------   |    ----------------------             |
-         |             1  |# # # # # # # # # # |   | 1  |# # # # # # # # # # |             |
-         |             2  |# # # # # # # # # # |   | 2  |# # # # # # # # # # |             |
-         |             3  |# # # # # # # # # # |   | 3  |# # # # # # # # # # |             |
-         |             4  |# # # # # # # # # # |   | 4  |# # # # # # # # # # |             |
-         |             5  |# # # # # # # # # # |   | 5  |# # # # # # # # # # |             |
-         |             6  |# # # # # # # # # # |   | 6  |# # # # # # # # # # |             |
-         |             7  |# # # # # # # # # # |   | 7  |# # # # # # # # # # |             |
-         |             8  |# # # # # # # # # # |   | 8  |# # # # # # # # # # |             |
-         |             9  |# # # # # # # # # # |   | 9  |# # # # # # # # # # |             |
-         |             10 |# # # # # # # # # # |   | 10 |# # # # # # # # # # |             |
-         |                ----------------------   |    ----------------------             |
-         |                --You--                  |     --Enemy--                         |
-         |                Shots:                   |     Shots:                            |
-         |                Hits:                    |     Hits:                             |
-         |                Misses:                  |     Misses:                           |
-         |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
-         |  _  |                                   |  _  |                                 |
-         | |1| | Manual Ship Placement:            | |2| | Auto Ship Placement:            |
-         |_____|                                   |_____|                                 |
-         |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
-         |                                                                                 |
-         |                            Please enter your choice:                            |
-         |=================================================================================|
-
-
-
-
-*/
 #include <iostream>
 #include <windows.h>
 #include <cstdlib>
@@ -142,11 +93,11 @@ int main()
         {
             ClearScreen();
 
-            char cPlayerGrid[GRIDSIZE][GRIDSIZE];
+            char cPlayerGrid[GRIDSIZE][GRIDSIZE];// TF: Array
             char cEnemyGrid[GRIDSIZE][GRIDSIZE];
             FillGrid(cPlayerGrid);
             FillGrid(cEnemyGrid);
-            CFleet cPlayerFleet;
+            CFleet cPlayerFleet;// TF: Class Instance
             CFleet cEnemyFleet;
             ///AutoPlaceShips(cPlayerGrid);
             AutoPlaceShips(cEnemyGrid,&cEnemyFleet);
@@ -267,9 +218,9 @@ int main()
                     Sleep(1500);
                 }
             }
-
+            CFleet cEnemyFinal(cEnemyFleet);
             // whoever still has ships won
-            ShowSummary(HasShips(cPlayerGrid), iPlayerShots, iPlayerHits, iEnemyShots, iEnemyHits, cEnemyFleet.GetShipsSunk());
+            ShowSummary(HasShips(cPlayerGrid), iPlayerShots, iPlayerHits, iEnemyShots, iEnemyHits, cEnemyFinal.GetShipsSunk());
             break;
         }
         case 2:

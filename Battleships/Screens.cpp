@@ -51,7 +51,7 @@ void PrintAscii() {
 void DrawBox(int _iLeft, int _iTop, int _iWidth, int _iHeight)
 {
     // Draw the top and bottom edges.
-    for (int iX = 0; iX < _iWidth; ++iX)
+    for (int iX = 0; iX < _iWidth; ++iX)// TF: Iteration Structure
     {
         GotoXY(_iLeft + iX, _iTop);
         cout << "-";

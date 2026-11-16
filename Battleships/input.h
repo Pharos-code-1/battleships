@@ -4,7 +4,7 @@ Media Design School at Strayer
 Auckland
 New Zealand
 (c) 2026 Media Design School at Strayer
-File Name : input.h
+File Name : Input.h
 Description : main source file for console Battleships game
 Author : Campbell Roberts
 Mail : Campbell.Roberts@mds.ac.nz

@@ -115,13 +115,13 @@ bool PlaceShip(char _cGrid[GRIDSIZE][GRIDSIZE], int _iRow, int _iCol, int _iLeng
             iCheckRow = _iRow + iIndex;
         }
 
-        if (iCheckRow < 0 || iCheckRow >= GRIDSIZE || iCheckCol < 0 || iCheckCol >= GRIDSIZE)
+        if (iCheckRow < 0 || iCheckRow >= GRIDSIZE || iCheckCol < 0 || iCheckCol >= GRIDSIZE) // TF: Logical Operator
         {
             return false;
         }
 
         // something already there
-        if (_cGrid[iCheckRow][iCheckCol] != OCEAN)
+        if (_cGrid[iCheckRow][iCheckCol] != OCEAN)// TF: Relational Operator
         {
             return false;
         }
@@ -154,7 +154,7 @@ void AutoPlaceShips(char _cGrid[GRIDSIZE][GRIDSIZE], CFleet* _pFleet)
 
     for (int iShip = 0; iShip < NUMSHIPS; ++iShip)
     {
-        bool bPlaced = false;
+        bool bPlaced = false;// TF: Variable Type
 
         // keep trying random spots until the ship fits
         while (!bPlaced)

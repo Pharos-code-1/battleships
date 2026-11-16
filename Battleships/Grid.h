@@ -4,11 +4,12 @@ Media Design School at Strayer
 Auckland
 New Zealand
 (c) 2026 Media Design School at Strayer
-File Name : Grid.cpp
+File Name : Grid.h
 Description : main source file for console Battleships game
 Author : Campbell Roberts
 Mail : Campbell.Roberts@mds.ac.nz
-**************************************************************************/#pragma once
+**************************************************************************/
+#pragma once
 #include "Constants.h"
 #include "Fleet.h"
 void FillGrid(char _cGrid[GRIDSIZE][GRIDSIZE]);
