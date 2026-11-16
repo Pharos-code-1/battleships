@@ -5,7 +5,7 @@ Auckland
 New Zealand
 (c) 2026 Media Design School at Strayer
 File Name : Grid.h
-Description : main source file for console Battleships game
+Description : grid function prototypes and shot result enum
 Author : Campbell Roberts
 Mail : Campbell.Roberts@mds.ac.nz
 **************************************************************************/

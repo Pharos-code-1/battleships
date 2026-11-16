@@ -99,7 +99,6 @@ int main()
             FillGrid(cEnemyGrid);
             CFleet cPlayerFleet;// TF: Class Instance
             CFleet cEnemyFleet;
-            ///AutoPlaceShips(cPlayerGrid);
             AutoPlaceShips(cEnemyGrid,&cEnemyFleet);
 
             DrawPlayScreen(cPlayerGrid, cEnemyGrid, bDebug);
@@ -127,7 +126,7 @@ int main()
             }
 
             SetRgb(COLOUR_YELLOW_ON_BLACK);
-            DrawGrid(cPlayerGrid, PLAYERGRIDX, GRIDY, !bDebug);
+            DrawGrid(cPlayerGrid, PLAYERGRIDX, GRIDY, true);
             ClearPlacementBoxes();
             
 
@@ -206,7 +205,7 @@ int main()
                                 ++iEnemyMisses;
                                 ShowPrompt(string("Enemy fired at ") + char('A' + iEnemyCol) + to_string(iEnemyRow + 1) + ": Miss");
                             }
-                            DrawGrid(cPlayerGrid, PLAYERGRIDX, GRIDY, !bDebug);
+                            DrawGrid(cPlayerGrid, PLAYERGRIDX, GRIDY, true);
                             DrawStats(ENEMYGRIDX + 6, iEnemyShots, iEnemyHits, iEnemyMisses);
                             Sleep(1500);
                         }

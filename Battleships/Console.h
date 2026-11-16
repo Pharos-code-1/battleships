@@ -9,8 +9,8 @@ Description : colour enum and console helper prototypes
 Author : Campbell Roberts
 Mail : Campbell.Roberts@mds.ac.nz
 **************************************************************************/
-#include <windows.h>
 #pragma once
+#include <windows.h>
 // Colour options for console text.
 enum EColour
 {

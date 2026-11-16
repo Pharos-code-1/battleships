@@ -5,7 +5,7 @@ Auckland
 New Zealand
 (c) 2026 Media Design School at Strayer
 File Name : Screens.h
-Description : main source file for console Battleships game
+Description : screen function prototypes
 Author : Campbell Roberts
 Mail : Campbell.Roberts@mds.ac.nz
 **************************************************************************/

@@ -5,7 +5,7 @@ Auckland
 New Zealand
 (c) 2026 Media Design School at Strayer
 File Name : Screens.cpp
-Description : main source file for console Battleships game
+Description : screen drawing for the play screen, prompts, stats, summary, instructions and credits
 Author : Campbell Roberts
 Mail : Campbell.Roberts@mds.ac.nz
 **************************************************************************/
@@ -105,7 +105,7 @@ void DrawPlayScreen(char _cPlayerGrid[GRIDSIZE][GRIDSIZE], char _cEnemyGrid[GRID
     // player grid (left)
     SetRgb(COLOUR_YELLOW_ON_BLACK);
     DrawBox(PLAYERGRIDX, GRIDY, 22, 12);
-    DrawGrid(_cPlayerGrid, PLAYERGRIDX, GRIDY, !_bDebug);
+    DrawGrid(_cPlayerGrid, PLAYERGRIDX, GRIDY, true);
     DrawLabels(PLAYERGRIDX, GRIDY);
 
     // enemy grid (right)

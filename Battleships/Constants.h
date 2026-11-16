@@ -5,7 +5,7 @@ Auckland
 New Zealand
 (c) 2026 Media Design School at Strayer
 File Name : Constants.h
-Description : main source file for console Battleships game
+Description : grid, ship, symbol and screen layout constants for Battleships game
 Author : Campbell Roberts
 Mail : Campbell.Roberts@mds.ac.nz
 **************************************************************************/

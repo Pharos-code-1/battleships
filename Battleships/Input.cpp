@@ -5,7 +5,7 @@ Auckland
 New Zealand
 (c) 2026 Media Design School at Strayer
 File Name : Input.cpp
-Description : main source file for console Battleships game
+Description : ship placement and target input reading, validation and manual placement
 Author : Campbell Roberts
 Mail : Campbell.Roberts@mds.ac.nz
 **************************************************************************/

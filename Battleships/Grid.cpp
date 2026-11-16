@@ -5,7 +5,7 @@ Auckland
 New Zealand
 (c) 2026 Media Design School at Strayer
 File Name : Grid.cpp
-Description : main source file for console Battleships game
+Description : grid filling, drawing, ship placement, shot handling and computer AI shooting
 Author : Campbell Roberts
 Mail : Campbell.Roberts@mds.ac.nz
 **************************************************************************/
